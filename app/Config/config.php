@@ -9,9 +9,9 @@ $config['site']['author']                   = "Jordan R. Cachero";
 /* Database
  */
 $config['db']['host']                       = "localhost";
-$config['db']['user']                       = "root";
-$config['db']['password']                   = "";
-$config['db']['database']                   = "danero";
+$config['db']['user']                       = "jrdncchr_danero";
+$config['db']['password']                   = "danero1120";
+$config['db']['database']                   = "jrdncchr_danero";
 $config['db']['driver']                     = "mysql";
 
 

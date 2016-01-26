@@ -39,9 +39,11 @@ class Castle {
         /* Validate the if the controller class based in the url exists.
          * If exists, then we include that controller class.
          */
-        $controller_class = $king->getController() . "Controller";
+        $controller_class = ucfirst($king->getController()) . "Controller";
         $controller_path = CONTROLLERS_PATH . $controller_class . ".php";
+
         if(file_exists($controller_path)) {
+
             include_once $controller_path;
 
             /* Initialise the controller class.
