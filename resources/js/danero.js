@@ -5,5 +5,5 @@ $(function(){
 });
 
 function setColumnSize() {
-    $('.wrapper').css('min-height', $( window ).height() - 20);
+    $('.wrapper').css('min-height', $( window ).height() - 22);
 }

@@ -19,7 +19,7 @@
 
         <style>
             .welcome p {
-                margin-top: 100px;
+                margin-top: 20%;
                 text-align: center;
                 font-size: 36px;
             }
@@ -33,7 +33,7 @@
             </section>
             <div class="push"></div>
         </div>
-        <footer class="footer">&copy; Copyright <?php echo date('Y'); ?> Danero</footer>
+        <footer class="footer text-center">&copy; Copyright <?php echo date('Y'); ?> Danero</footer>
     </body>
 
     <!-- Scripts -->
