@@ -17,12 +17,12 @@ a:focus {
     padding-bottom:20px;
 }
 
-header.un-logged {
+div.un-logged {
     padding: 3px 10px;
     font-size: 13px;
     float: right;
 }
-header.un-logged a:hover {
+div.un-logged a:hover {
     color: #EA7B77;
 }
 .hr-header {
@@ -46,7 +46,7 @@ header.un-logged a:hover {
 .memoir.left {
     margin-right: 100px;
 }
-.memoirs-list {
+.danero-container {
     padding: 20px 15%;
 }
 @media screen and (max-width: 540px) {

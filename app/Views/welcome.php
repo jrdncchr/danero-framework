@@ -23,13 +23,17 @@
                 text-align: center;
                 font-size: 36px;
             }
+            a {
+                margin: 0;
+                padding: 0;
+            }
         </style>
     </head>
 
     <body>
         <div class="wrapper">
             <section class="welcome">
-                <p>DANER<i class="fa fa-smile-o"></i></p>
+                <p>DANER<a href="<?php echo base_url() . 'user/login'; ?>"><i class="fa fa-smile-o"></i></a></p>
             </section>
             <div class="push"></div>
         </div>

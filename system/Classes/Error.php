@@ -2,20 +2,21 @@
 
 class Error {
 
-    public static function display($type, $exit = TRUE) {
+    public static function display($type, $message = "", $exit = TRUE) {
         switch($type) {
 
-            case 'VIEW_NOT_FOUND':
+            case 'PDO_ERROR':
             case 'MODEL_NOT_FOUND':
-                self::show("Something went wrong!", $type);
+            case 'VIEW_NOT_FOUND':
+                self::show("This is embarrassing. Something went wrong!", $message);
                 break;
 
             case 'NOT_FOUND':
-                self::show("Page not found.", $type);
+                self::show("Sorry but the page was found.", $message);
                 break;
 
             case 'UNDER_ATTACK':
-                self::show("Unauthorized Request.", $type);
+                self::show("Oh ohh. Unauthorized Request.", $message);
                 break;
         }
 

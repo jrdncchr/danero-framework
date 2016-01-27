@@ -74,7 +74,7 @@ class Castle {
         /* Return an error if its an invalid path.
          */
         if(!$valid) {
-            Error::display('NOT_FOUND');
+            Error::display('NOT_FOUND', "Something is WRONG in the Castle class, the path or controller was not found.");
         }
     }
 

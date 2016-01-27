@@ -27,17 +27,24 @@
 </head>
 
 <body>
+
 <div class="wrapper">
-    <section class="error">
-        <p><?php echo $error_message; ?> <i class="fa fa-frown-o" title="<?php echo $hidden_message; ?>"></i></p>
+
+    <section class="container">
+        <div class="danero-container">
+            <section class="error">
+                <p><?php echo $error_message; ?> <i class="fa fa-frown-o" title="<?php echo $hidden_message; ?>"></i></p>
+            </section>
+        </div>
     </section>
     <div class="push"></div>
 </div>
+
 <footer class="footer text-center">&copy; Copyright <?php echo date('Y'); ?> Danero</footer>
-</body>
 
 <!-- Scripts -->
 <script src="<?php echo base_url() . 'resources/bower_components/jquery/dist/jquery.min.js'; ?>"></script>
 <script src="<?php echo base_url() . 'resources/js/danero.js'; ?>"></script>
+</body>
 
 </html>

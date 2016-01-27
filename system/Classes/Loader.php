@@ -38,7 +38,7 @@ class Loader {
             }
             include $view_path;
         } else {
-            Error::display('VIEW_NOT_FOUND');
+            Error::display('VIEW_NOT_FOUND', "The view '$name' was not found!");
         }
         return false;
     }
@@ -57,7 +57,7 @@ class Loader {
             include $model_path;
             $this->caller->$model = new $model();
         } else {
-            Error::display('MODEL_NOT_FOUND');
+            Error::display('MODEL_NOT_FOUND', "The model '" . ucfirst($model) . "' was not found!");
         }
     }
 
