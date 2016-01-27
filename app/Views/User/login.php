@@ -16,7 +16,10 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            <a href="<?php echo base_url() . 'memoir'; ?>" class="btn btn-default">Log in</a>
+            <a href="<?php echo base_url() . 'memoir'; ?>" class="btn blue-btn hover"
+                data-toggle="tooltip" title="Log in">
+                <i class="fa fa-key"></i>
+            </a>
         </div>
     </div>
 </form>

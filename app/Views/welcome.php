@@ -32,8 +32,12 @@
 
     <body>
         <div class="wrapper">
-            <section class="welcome">
-                <p>DANER<a href="<?php echo base_url() . 'user/login'; ?>"><i class="fa fa-smile-o"></i></a></p>
+            <section class="container">
+                <div class="danero-container">
+                    <section class="welcome">
+                        <p>DANER<a href="<?php echo base_url() . 'user/login'; ?>"><i class="fa fa-smile-o"></i></a></p>
+                    </section>
+                </div>
             </section>
             <div class="push"></div>
         </div>

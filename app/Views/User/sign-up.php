@@ -28,7 +28,9 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            <button type="submit" class="btn btn-default">Sign up</button>
+            <button class="btn blue-btn hover" data-toggle="tooltip" title="Sign Up">
+                <i class="fa fa-check"></i>
+            </button>
         </div>
     </div>
 </form>

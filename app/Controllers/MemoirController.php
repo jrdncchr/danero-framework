@@ -23,4 +23,16 @@ class MemoirController extends BaseController {
         }
     }
 
+    public function form($id = 0) {
+        $data = array();
+        if($id > 0) {
+            $memoir = $this->memoir->get(array("id" => $id));
+            if($memoir['isFetched']) {
+                $this->_render('Memoir/form', array('memoir' => $memoir['result']));
+            }
+        } else {
+            $this->_render('Memoir/form', $data);
+        }
+    }
+
 } 

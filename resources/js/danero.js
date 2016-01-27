@@ -1,7 +1,12 @@
-// STICKY FOOTER
-$(function(){
+$(function() {
+    /* Sticky Footer */
     setColumnSize();
     $(window).resize(function () { setColumnSize(); });
+
+    /* Activate Tooltips */
+    $('[data-toggle="tooltip"]').tooltip({
+        placement: 'top'
+    });
 });
 
 function setColumnSize() {

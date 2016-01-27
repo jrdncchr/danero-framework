@@ -9,8 +9,8 @@ a {
     text-decoration: none !important;
     color: #046380;
 }
-a:focus {
-    outline: 0;
+a:focus, button:focus {
+    outline: 0 !important;
 }
 
 .wrapper {
@@ -26,14 +26,17 @@ div.un-logged a:hover {
     color: #EA7B77;
 }
 .hr-header {
-    margin: 10px 0 25px 0;
+    margin: 10px 0 20px 0;
+}
+.danero-container {
+    padding: 20px 15%;
 }
 
 /* Memoir styles
  */
  .memoir {
      border-radius: 20px 20px 20px 20px;
-     margin: 0 15px 10px;
+     margin: 15px 0;
      padding: 15px 20px;
      position: relative;
      background-color: #EBEBEB;
@@ -41,14 +44,32 @@ div.un-logged a:hover {
      cursor: pointer;
  }
 .memoir.right {
-    margin-left: 100px;
+    margin-left: 10%;
 }
 .memoir.left {
-    margin-right: 100px;
+    margin-right: 10%;
 }
-.danero-container {
-    padding: 20px 15%;
+
+/* Custom Buttons */
+.blue-btn {
+    border-radius: 50% !important;
+    background-color: lightblue;
+    color: dimgrey;
 }
+.gray-btn {
+    border-radius: 50% !important;
+    background-color: lightgray;
+    color: dimgray;
+}
+.gray:hover, .blue-btn:hover {
+    color: #000000;
+    box-shadow: 0 0 2px #046380;
+}
+.blue-btn.hover {
+    color: #000000;
+}
+
+/* Responsive */
 @media screen and (max-width: 540px) {
     .memoirs-list {
         padding: 0 0;

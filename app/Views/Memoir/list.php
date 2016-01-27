@@ -1,5 +1,11 @@
 <h2><a href="<?php echo base_url() . 'memoir'; ?>">MEMOIRS</a></h2>
 <hr class="hr-header" />
+<div class="text-center">
+    <a href="<?php echo base_url() . 'memoir/form'; ?>" class="btn blue-btn"
+       data-toggle="tooltip" title="Create a new Memoir">
+        <i class="fa fa-plus"></i>
+    </a>
+</div>
 <?php
 $right = true;
 foreach($memoir as $m) {
