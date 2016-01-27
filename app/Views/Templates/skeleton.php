@@ -19,6 +19,10 @@
 
 <body>
 <div class="wrapper">
+    <header class="un-logged">
+        <a href="<?php echo base_url() . 'user/login'; ?>">Log in</a> or
+        <a href="<?php echo base_url() . 'user/sign_up'; ?>">Sign Up</a>
+    </header>
     <?php echo $content; ?>
     <div class="push"></div>
 </div>

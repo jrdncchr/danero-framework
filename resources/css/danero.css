@@ -5,8 +5,65 @@
 html, body {
     height: 100%;
 }
+a {
+    text-decoration: none !important;
+    color: #046380;
+}
+a:focus {
+    outline: 0;
+}
 
-.wrapper{
-    padding-top:20px;
+.wrapper {
     padding-bottom:20px;
+}
+
+header.un-logged {
+    padding: 3px 10px;
+    font-size: 13px;
+    float: right;
+}
+header.un-logged a:hover {
+    color: #EA7B77;
+}
+.hr-header {
+    margin: 10px 0 25px 0;
+}
+
+/* Memoir styles
+ */
+ .memoir {
+     border-radius: 20px 20px 20px 20px;
+     margin: 0 15px 10px;
+     padding: 15px 20px;
+     position: relative;
+     background-color: #EBEBEB;
+     color: #3D3D3D;
+     cursor: pointer;
+ }
+.memoir.right {
+    margin-left: 100px;
+}
+.memoir.left {
+    margin-right: 100px;
+}
+.memoirs-list {
+    padding: 20px 15%;
+}
+@media screen and (max-width: 540px) {
+    .memoirs-list {
+        padding: 0 0;
+    }
+    header.un-logged {
+        float:left;
+        text-align: center;
+        width: 100%;
+        padding-bottom: 15px;
+    }
+}
+
+/* Custom Bootstrap
+ */
+.form-group label {
+    font-weight: normal;
+    font-size: 14px !important;
 }

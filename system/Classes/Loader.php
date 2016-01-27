@@ -47,7 +47,7 @@ class Loader {
      * @model - string, name of the php model file.
      */
     public function model($model) {
-        $model_path = MODELS_PATH . $model . ".php";
+        $model_path = MODELS_PATH . ucfirst($model) . ".php";
         if(file_exists($model_path)) {
 
             /* If the model exists, the model will be included and instantiated.
