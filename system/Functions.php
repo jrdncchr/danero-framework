@@ -27,3 +27,9 @@ if (!function_exists('base_url')) {
         return $base_url;
     }
 }
+
+function is_multi($a) {
+    $rv = array_filter($a,'is_array');
+    if(count($rv) == sizeof($a)) return true;
+    return false;
+}

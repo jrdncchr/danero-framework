@@ -7,15 +7,24 @@
     </a>
 </div>
 <?php
-$right = true;
-foreach($memoir as $m) {
-    ?>
-    <div class="memoir <?php echo $right ? 'right' : 'left'; ?>" data-id="<?php echo $m['id']; ?>">
-        <?php echo $m['message']; ?>
-    </div>
-    <?php
-    $right = !$right;
-} ?>
+    if(isset($memoir)) {
+        $right = true;
+        if(is_multi($memoir)) {
+            foreach ($memoir as $m) {
+                ?>
+                <div class="memoir <?php echo $right ? 'right' : 'left'; ?>" data-id="<?php echo $m['id']; ?>">
+                    <?php echo $m['message']; ?>
+                </div>
+                <?php
+                $right = !$right;
+            }
+        } else { ?>
+            <div class="memoir <?php echo $right ? 'right' : 'left'; ?>" data-id="<?php echo $memoir['id']; ?>">
+                <?php echo $memoir['message']; ?>
+            </div>
+        <?php }
+    }
+?>
 
 
 <script>

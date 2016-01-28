@@ -8,16 +8,16 @@ class MemoirController extends BaseController {
     }
 
     public function index() {
-        $memoirs = $this->memoir->get();
-        $this->_render('Memoir/list', array('memoir' => $memoirs['result']));
+        $memoirs = $this->memoir->get(array('user_id' => 1));
+        $result = $memoirs['isFetched'] ? array('memoir' => $memoirs['result']) : array();
+        $this->_render('Memoir/list', $result);
     }
 
     public function view($id = 0) {
         if($id > 0) {
-            $memoir = $this->memoir->get(array("id" => $id));
-            if($memoir['isFetched']) {
-                $this->_render('Memoir/view', array('memoir' => $memoir['result']));
-            }
+            $memoir = $this->memoir->get(array('id' => $id, 'user_id' => 1));
+            $result = $memoir['isFetched'] ? array('memoir' => $memoir['result']) : array();
+            $this->_render('Memoir/view', $result);
         } else {
             $this->index();
         }
@@ -26,13 +26,21 @@ class MemoirController extends BaseController {
     public function form($id = 0) {
         $data = array();
         if($id > 0) {
-            $memoir = $this->memoir->get(array("id" => $id));
+            $memoir = $this->memoir->get(array('id' => $id, 'user_id' => 1));
             if($memoir['isFetched']) {
                 $this->_render('Memoir/form', array('memoir' => $memoir['result']));
             }
         } else {
             $this->_render('Memoir/form', $data);
         }
+    }
+
+    public function add() {
+        $memoir = $this->memoir->add(array(
+            'message' => 'Test Message',
+            'user_id' => 1
+        ));
+        var_dump($memoir);
     }
 
 } 

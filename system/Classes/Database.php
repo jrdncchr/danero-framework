@@ -3,56 +3,161 @@
 class Database {
 
     private $db = null;
+    private $query = "";
+    private $table;
+    private $select = "*";
+    private $filter = array();
+    private $values = array();
+    private $col_val = array();
+    private $option = array();
 
     private function init() {
-        global $config;
-        $dsn = "mysql:host=" . $config['db']['host'] . ";dbname=" . $config['db']['database'];
-        $user = $config['db']['user'];
-        $password = $config['db']['password'];
-        $options = array(
-            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
-        );
-        $db = new PDO($dsn, $user, $password, $options);
-        if ($db->getAttribute(PDO::ATTR_DRIVER_NAME) == $config['db']['driver']) {
-            $this->db = $db;
+        try {
+            global $config;
+            $dsn = "mysql:host=" . $config['db']['host'] . ";dbname=" . $config['db']['database'];
+            $user = $config['db']['user'];
+            $password = $config['db']['password'];
+            $options = array(
+                PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
+            );
+            $db = new PDO($dsn, $user, $password, $options);
+            if ($db->getAttribute(PDO::ATTR_DRIVER_NAME) == $config['db']['driver']) {
+                $this->db = $db;
+            }
+        } catch(Exception $e) {
+            Error::display('PDO_ERROR', $e->getMessage());
         }
     }
 
+    public function getInstance() {
+        $this->init();
+        return $this->db;
+    }
+
+    /* SELECT
+     */
     public function get($table, $option = array()) {
+        $this->table = $table;
+        $this->_setupFilter($option);
         $result['isFetched'] = false;
-        $query = "SELECT * FROM $table";
-        $where_values = array();
-        try {
-            $this->init();
-            if(sizeof($option) > 0) {
-                $where = $this->_setupWhere($option);
-                $query .= $where['query'];
-                $where_values = $where['values'];
+
+        if(sizeof($this->filter) > 0) {
+            try {
+                $this->init();
+                if($this->_setupQuery('SELECT')) {
+                    $result['query'] = $this->query;
+                    $stmt = $this->db->prepare($this->query);
+                    if($stmt->execute($this->values)) {
+                        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $result['result'] = sizeof($rows) > 1 ? $rows : (sizeof($rows) == 1 ? $rows[0] : array());
+                        $result['isFetched'] = true;
+                    }
+                }
+            } catch (PDOException $e) {
+                Error::display('PDO_ERROR', $e->getMessage());
             }
-            $stmt = $this->db->prepare($query);
-            $stmt->execute($where_values);
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $result['result'] = sizeof($rows) > 1 ? $rows : (sizeof($rows) == 1 ? $rows[0] : array());
-            $result['isFetched'] = true;
-        } catch (PDOException $e) {
-            Error::display('PDO_ERROR', $e->getMessage());
         }
         return $result;
     }
 
-    private function _setupWhere($where = array()) {
-        $setup = [];
-        if(sizeof($where) > 0) {
-            $setup['query'] = " WHERE ";
-            foreach($where as $k => $v) {
-                $setup['query'] .= "$k = :$k ";
-                $setup['values'][":$k"] = $v;
+
+    /* INSERT
+     */
+    public function add($table, $val) {
+        $this->table = $table;
+        $this->col_val = $val;
+        $result['isAdded'] = false;
+
+        if(sizeof($val) > 0) {
+            try {
+                $this->init();
+                if($this->_setupQuery('INSERT')) {
+                    $result['query'] = $this->query;
+                    $stmt = $this->db->prepare($this->query);
+                    if($stmt->execute($this->values)) {
+                        $result['isAdded'] = true;
+                    }
+                }
+            } catch (PDOException $e) {
+                Error::display('PDO_ERROR', $e->getMessage());
             }
         }
-        return $setup;
+        return $result;
     }
 
+    private function _setupQuery($type = 'SELECT') {
+        switch($type) {
 
+            case 'SELECT':
+                $this->query = "SELECT " . $this->select . " FROM " . $this->table . " WHERE ";
+                $i = 0;
+
+                if(isset($this->filter['AND'])) {
+                    foreach($this->filter['AND'] as $k => $v) {
+                        if($i > 0) {
+                            $this->query .= " AND ";
+                        }
+                        $finalize_key = $this->_finalizeKeyName($k);
+                        $this->query .= $k . "=:" . $finalize_key;
+                        $this->values[$finalize_key] = $v;
+                        $i++;
+                    }
+                }
+
+                if(isset($this->filter['OR'])) {
+                    foreach($this->filter['OR'] as $k => $v) {
+                        if($i > 0) {
+                            $this->query .= " OR ";
+                        }
+                        $finalize_key = $this->_finalizeKeyName($k);
+                        $this->query .= $k . "=:" . $finalize_key;
+                        $this->values[$finalize_key] = $v;
+                        $i++;
+                    }
+                }
+                break;
+
+            case 'INSERT':
+                $col_val = $this->_setupColumnValues($this->col_val);
+                $this->query = "INSERT INTO " . $this->table . $col_val;
+                break;
+
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    private function _setupFilter($filter = array()) {
+        foreach($filter as $k => $v) {
+            $and_or = 'AND';
+            if(strpos($k, 'OR ') !== false) {
+                $k = substr($k, 3);
+                $and_or = 'OR';
+            }
+            $this->filter[$and_or][$k] = $v;
+        }
+    }
+
+    private function _finalizeKeyName($k) {
+        if(array_key_exists($k, $this->values)) {
+            $k = "$k" . "_" . rand(1, 10000);
+        }
+        return $k;
+    }
+
+    private function _setupColumnValues($val) {
+        $columns = "(";
+        $values = "VALUES (";
+        foreach($val as $k => $v) {
+            $columns .= "$k,";
+            $values .= ":$k,";
+            $this->values[$k] = $v;
+        }
+        $columns = substr($columns, 0,-1) . ")";
+        $values = substr($values, 0, -1) . ")";
+        return $columns . " " . $values;
+    }
 
 
 } 

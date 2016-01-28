@@ -3,8 +3,11 @@
 class Memoir extends Model {
 
     public function get($options = array()) {
-        $result = $this->db->get('memoir', $options);
-        return $result;
+        return $this->db->get('memoir', $options);
+    }
+
+    public function add($values) {
+        return $this->db->add('memoir', $values);
     }
 
 } 
