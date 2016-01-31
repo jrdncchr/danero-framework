@@ -35,12 +35,21 @@ class MemoirController extends BaseController {
         }
     }
 
-    public function add() {
-        $memoir = $this->memoir->add(array(
-            'message' => 'Test Message',
-            'user_id' => 1
+    public function save() {
+        if($this->input->post('action') == 'add') {
+            $response = $this->memoir->add(array(
+                'message' => Input::filterText($this->input->post('message')),
+                'user_id' => 1
+            ));
+            echo json_encode($response);
+        };
+    }
+
+    public function delete() {
+        $response = $this->memoir->delete(array(
+            'id' => $this->input->post('id')
         ));
-        var_dump($memoir);
+        echo json_encode($response);
     }
 
 } 

@@ -25,4 +25,5 @@ if(file_exists($base_controller)) {
 
 /* Lets GO!
  */
+session_start();
 Castle::initialize();

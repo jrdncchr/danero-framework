@@ -13,14 +13,14 @@
             foreach ($memoir as $m) {
                 ?>
                 <div class="memoir <?php echo $right ? 'right' : 'left'; ?>" data-id="<?php echo $m['id']; ?>">
-                    <?php echo $m['message']; ?>
+                    <?php echo nl2br($m['message']); ?>
                 </div>
                 <?php
                 $right = !$right;
             }
         } else { ?>
             <div class="memoir <?php echo $right ? 'right' : 'left'; ?>" data-id="<?php echo $memoir['id']; ?>">
-                <?php echo $memoir['message']; ?>
+                <?php echo nl2br($memoir['message']); ?>
             </div>
         <?php }
     }

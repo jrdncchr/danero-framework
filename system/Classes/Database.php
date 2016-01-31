@@ -36,9 +36,9 @@ class Database {
 
     /* SELECT
      */
-    public function get($table, $option = array()) {
+    public function get($table, $filter = array()) {
         $this->table = $table;
-        $this->_setupFilter($option);
+        $this->_setupFilter($filter);
         $result['isFetched'] = false;
 
         if(sizeof($this->filter) > 0) {
@@ -76,6 +76,7 @@ class Database {
                     $stmt = $this->db->prepare($this->query);
                     if($stmt->execute($this->values)) {
                         $result['isAdded'] = true;
+                        $result['lastInsertId'] = $this->db->lastInsertId();
                     }
                 }
             } catch (PDOException $e) {
@@ -85,36 +86,49 @@ class Database {
         return $result;
     }
 
+    /* DELETE
+     */
+    public function delete($table, $option = array()) {
+        $this->table = $table;
+        $this->_setupFilter($option);
+        $result['isDeleted'] = false;
+        if(sizeof($this->filter) > 0) {
+            try {
+                $this->init();
+                if($this->_setupQuery('DELETE')) {
+                    $result['query'] = $this->query;
+                    $stmt = $this->db->prepare($this->query);
+                    if($stmt->execute($this->values)) {
+                        $result['isDeleted'] = true;
+                    }
+                }
+            } catch (PDOException $e) {
+                Error::display('PDO_ERROR', $e->getMessage());
+            }
+        }
+        return $result;
+    }
+
+    /* ORDER BY
+     */
+
+    public function orderBy($column_name, $order = 'ASC') {
+        $this->option['order_by'] = array(
+            'column' => $column_name,
+            'order' => $order
+        );
+    }
+
+    /* CLASS FUNCTIONS
+     */
+
     private function _setupQuery($type = 'SELECT') {
         switch($type) {
 
             case 'SELECT':
                 $this->query = "SELECT " . $this->select . " FROM " . $this->table . " WHERE ";
-                $i = 0;
-
-                if(isset($this->filter['AND'])) {
-                    foreach($this->filter['AND'] as $k => $v) {
-                        if($i > 0) {
-                            $this->query .= " AND ";
-                        }
-                        $finalize_key = $this->_finalizeKeyName($k);
-                        $this->query .= $k . "=:" . $finalize_key;
-                        $this->values[$finalize_key] = $v;
-                        $i++;
-                    }
-                }
-
-                if(isset($this->filter['OR'])) {
-                    foreach($this->filter['OR'] as $k => $v) {
-                        if($i > 0) {
-                            $this->query .= " OR ";
-                        }
-                        $finalize_key = $this->_finalizeKeyName($k);
-                        $this->query .= $k . "=:" . $finalize_key;
-                        $this->values[$finalize_key] = $v;
-                        $i++;
-                    }
-                }
+                $this->_addFilterQuery();
+                $this->_addOptionQuery();
                 break;
 
             case 'INSERT':
@@ -122,10 +136,51 @@ class Database {
                 $this->query = "INSERT INTO " . $this->table . $col_val;
                 break;
 
+            case 'DELETE':
+                $this->query = "DELETE FROM " . $this->table . " WHERE ";
+                $this->_addFilterQuery();
+                break;
+
             default:
                 return false;
         }
         return true;
+    }
+
+    private function _addFilterQuery() {
+        $i = 0;
+
+        if(isset($this->filter['AND'])) {
+            foreach($this->filter['AND'] as $k => $v) {
+                if($i > 0) {
+                    $this->query .= " AND ";
+                }
+                $finalize_key = $this->_finalizeKeyName($k);
+                $this->query .= $k . "=:" . $finalize_key;
+                $this->values[$finalize_key] = $v;
+                $i++;
+            }
+        }
+
+        if(isset($this->filter['OR'])) {
+            foreach($this->filter['OR'] as $k => $v) {
+                if($i > 0) {
+                    $this->query .= " OR ";
+                }
+                $finalize_key = $this->_finalizeKeyName($k);
+                $this->query .= $k . "=:" . $finalize_key;
+                $this->values[$finalize_key] = $v;
+                $i++;
+            }
+        }
+    }
+
+    public function _addOptionQuery() {
+        if(isset($this->option['order_by'])) {
+            $this->query .= " ORDER BY " .
+                $this->option['order_by']['column'] . " " .
+                $this->option['order_by']['order'];
+        }
     }
 
     private function _setupFilter($filter = array()) {

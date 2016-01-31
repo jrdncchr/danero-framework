@@ -3,7 +3,7 @@
 /* List of global functions to be used.
  */
 if (!function_exists('base_url')) {
-    function base_url($atRoot = FALSE, $atCore = FALSE, $parse = FALSE){
+    function base_url($atRoot = FALSE, $atCore = FALSE, $parse = FALSE) {
         if (isset($_SERVER['HTTP_HOST'])) {
             $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
             $hostname = $_SERVER['HTTP_HOST'];
@@ -28,8 +28,16 @@ if (!function_exists('base_url')) {
     }
 }
 
-function is_multi($a) {
-    $rv = array_filter($a,'is_array');
-    if(count($rv) == sizeof($a)) return true;
-    return false;
+if(!function_exists('is_multi')) {
+    function is_multi($a) {
+        $rv = array_filter($a, 'is_array');
+        if (count($rv) == sizeof($a)) return true;
+        return false;
+    }
+}
+
+if(!function_exists('trim_value')) {
+    function trim_value(&$value) {
+        $value = trim($value);
+    }
 }

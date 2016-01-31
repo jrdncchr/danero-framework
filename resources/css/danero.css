@@ -31,6 +31,12 @@ div.un-logged a:hover {
 .danero-container {
     padding: 20px 15%;
 }
+.has-error {
+    border-color: #EA7B77;
+}
+.has-error-label {
+    color: indianred;
+}
 
 /* Memoir styles
  */
@@ -54,19 +60,20 @@ div.un-logged a:hover {
 .blue-btn {
     border-radius: 50% !important;
     background-color: lightblue;
-    color: dimgrey;
+    color: #102222;
 }
 .gray-btn {
     border-radius: 50% !important;
     background-color: lightgray;
-    color: dimgray;
+    color: #102222;
 }
-.gray:hover, .blue-btn:hover {
-    color: #000000;
+.red-btn {
+    border-radius: 50% !important;
+    background-color: #EA7B77;
+    color: #102222;
+}
+.gray:hover, .blue-btn:hover, .red-btn:hover {
     box-shadow: 0 0 2px #046380;
-}
-.blue-btn.hover {
-    color: #000000;
 }
 
 /* Responsive */
@@ -87,4 +94,13 @@ div.un-logged a:hover {
 .form-group label {
     font-weight: normal;
     font-size: 14px !important;
+}
+.alert {
+    padding: 6px !important;
+    font-size: 13px;
+    margin: 0 0 10px 0!important;
+}
+.fa-sm {
+    font-size: 9px;
+    vertical-align: middle;
 }
