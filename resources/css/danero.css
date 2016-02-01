@@ -104,3 +104,12 @@ div.un-logged a:hover {
     font-size: 9px;
     vertical-align: middle;
 }
+
+/* Customize Select2
+ */
+.select2-container--default .select2-selection--single {
+    padding: 3px;
+    height: 37px;
+    font-size: 14px;
+    position: relative;
+}

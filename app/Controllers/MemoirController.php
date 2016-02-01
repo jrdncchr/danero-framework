@@ -9,15 +9,13 @@ class MemoirController extends BaseController {
 
     public function index() {
         $memoirs = $this->memoir->get(array('user_id' => 1));
-        $result = $memoirs['isFetched'] ? array('memoir' => $memoirs['result']) : array();
-        $this->_render('Memoir/list', $result);
+        $this->_render('Memoir/list', array('memoir' => $memoirs));
     }
 
     public function view($id = 0) {
         if($id > 0) {
             $memoir = $this->memoir->get(array('id' => $id, 'user_id' => 1));
-            $result = $memoir['isFetched'] ? array('memoir' => $memoir['result']) : array();
-            $this->_render('Memoir/view', $result);
+            $this->_render('Memoir/view', array('memoir' => $memoir));
         } else {
             $this->index();
         }
@@ -27,9 +25,7 @@ class MemoirController extends BaseController {
         $data = array();
         if($id > 0) {
             $memoir = $this->memoir->get(array('id' => $id, 'user_id' => 1));
-            if($memoir['isFetched']) {
-                $this->_render('Memoir/form', array('memoir' => $memoir['result']));
-            }
+            $this->_render('Memoir/form', array('memoir' => $memoir));
         } else {
             $this->_render('Memoir/form', $data);
         }

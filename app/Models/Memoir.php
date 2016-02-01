@@ -6,7 +6,8 @@ class Memoir extends Model {
 
     public function get($filter = array()) {
         $this->db->orderBy('date_created', 'DESC');
-        return $this->db->get($this->table, $filter);
+        $result = $this->db->get($this->table, $filter);
+        return $result['isFetched'] ? $result['result'] : array();
     }
 
     public function add($values) {

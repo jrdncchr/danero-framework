@@ -18,22 +18,47 @@ function setColumnSize() {
 }
 
 function validateForm(form) {
-    var result = {
-        success: true
+    var errors = {
+        required : [], email : []
     };
-    form.find('.required').each(function() {
-        if($(this).val() == "") {
-            result.message = "A required field is empty.";
-            result.success = false;
-            displayInputError($(this), true);
+    form.find('input, select, textarea').filter(':visible').each(function() {
+        var e = $(this);
+        if(!e.val()) {
+            if($(this).hasClass('required')) {
+                errors.required.push(e);
+            }
         } else {
-            displayInputError($(this), false);
+            if($(this).hasClass('email')) {
+                if(!validateEmail($(this).val())) {
+                    errors.email.push(e);
+                }
+            }
         }
+        displayInputError(e, false);
     });
+
+    var result = {
+        success : true
+    };
+    var i = 0;
+    if(errors.required.length > 0) {
+        result.success = false;
+        result.message = "A required field cannot be empty.";
+        for(i = 0; i < errors.required.length; i++) {
+            displayInputError(errors.required[i], true);
+        }
+    } else if(errors.email.length > 0) {
+        result.success = false;
+        result.message = "Invalid email format.";
+        for(i = 0; i < errors.email.length; i++) {
+            displayInputError(errors.email[i], true);
+        }
+    }
+
     if(!result.success) {
         displayAlertError(form, true, result.message);
     }
-    return result;
+    return result.success;
 }
 
 function displayInputError(input, show) {
@@ -50,4 +75,9 @@ function displayAlertError(form, show, message) {
     } else {
         form.find('.alert-danger').removeClass('alert').html("");
     }
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }

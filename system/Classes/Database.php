@@ -13,16 +13,18 @@ class Database {
 
     private function init() {
         try {
-            global $config;
-            $dsn = "mysql:host=" . $config['db']['host'] . ";dbname=" . $config['db']['database'];
-            $user = $config['db']['user'];
-            $password = $config['db']['password'];
-            $options = array(
-                PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
-            );
-            $db = new PDO($dsn, $user, $password, $options);
-            if ($db->getAttribute(PDO::ATTR_DRIVER_NAME) == $config['db']['driver']) {
-                $this->db = $db;
+            if(null == $this->db) {
+                global $config;
+                $dsn = "mysql:host=" . $config['db']['host'] . ";dbname=" . $config['db']['database'];
+                $user = $config['db']['user'];
+                $password = $config['db']['password'];
+                $options = array(
+                    PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
+                );
+                $db = new PDO($dsn, $user, $password, $options);
+                if ($db->getAttribute(PDO::ATTR_DRIVER_NAME) == $config['db']['driver']) {
+                    $this->db = $db;
+                }
             }
         } catch(Exception $e) {
             Error::display('PDO_ERROR', $e->getMessage());
@@ -41,22 +43,21 @@ class Database {
         $this->_setupFilter($filter);
         $result['isFetched'] = false;
 
-        if(sizeof($this->filter) > 0) {
-            try {
-                $this->init();
-                if($this->_setupQuery('SELECT')) {
-                    $result['query'] = $this->query;
-                    $stmt = $this->db->prepare($this->query);
-                    if($stmt->execute($this->values)) {
-                        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        $result['result'] = sizeof($rows) > 1 ? $rows : (sizeof($rows) == 1 ? $rows[0] : array());
-                        $result['isFetched'] = true;
-                    }
+        try {
+            $this->init();
+            if($this->_setupQuery('SELECT')) {
+                $result['query'] = $this->query;
+                $stmt = $this->db->prepare($this->query);
+                if($stmt->execute($this->values)) {
+                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $result['result'] = sizeof($rows) > 1 ? $rows : (sizeof($rows) == 1 ? $rows[0] : array());
+                    $result['isFetched'] = true;
                 }
-            } catch (PDOException $e) {
-                Error::display('PDO_ERROR', $e->getMessage());
             }
+        } catch (PDOException $e) {
+            Error::display('PDO_ERROR', $e->getMessage());
         }
+
         return $result;
     }
 
@@ -66,6 +67,7 @@ class Database {
     public function add($table, $val) {
         $this->table = $table;
         $this->col_val = $val;
+        $this->values = array();
         $result['isAdded'] = false;
 
         if(sizeof($val) > 0) {
@@ -126,7 +128,10 @@ class Database {
         switch($type) {
 
             case 'SELECT':
-                $this->query = "SELECT " . $this->select . " FROM " . $this->table . " WHERE ";
+                $this->query = "SELECT " . $this->select . " FROM " . $this->table;
+                if(sizeof($this->filter) > 0) {
+                    $this->query .= " WHERE ";
+                }
                 $this->_addFilterQuery();
                 $this->_addOptionQuery();
                 break;

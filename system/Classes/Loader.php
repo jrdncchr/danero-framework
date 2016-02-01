@@ -54,7 +54,7 @@ class Loader {
              * That instance is passed into a new property of a the caller class.
              * The property name will be the same as model name.
              */
-            include $model_path;
+            include_once $model_path;
             $this->caller->$model = new $model();
         } else {
             Error::display('MODEL_NOT_FOUND', "The model '" . ucfirst($model) . "' was not found!");
