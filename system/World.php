@@ -11,7 +11,10 @@ include_once "Functions.php";
 include_once "Constants.php";
 
 spl_autoload_register(function ($class) {
-    include_once 'Classes/' . $class . '.php';
+    $path = __DIR__ . '/Classes/' . $class . '.php';
+    if(file_exists($path)) {
+        include_once $path;
+    }
 });
 
 /* Added the BaseController here by default.

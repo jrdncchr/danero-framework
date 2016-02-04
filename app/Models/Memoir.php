@@ -7,13 +7,13 @@ class Memoir extends Model {
     public function get($filter = array()) {
         $this->db->orderBy('date_created', 'DESC');
         $result = $this->db->get($this->table, $filter);
-        return $result['isFetched'] ? $result['result'] : array();
+        return $result['success'] ? $result['result'] : array();
     }
 
     public function add($values) {
         $result = $this->db->add($this->table, $values);
         $response = array('success' => false);
-        if($result['isAdded']) {
+        if($result['success']) {
             $response['success'] = true;
             $response['id'] = $result['lastInsertId'];
             $_SESSION['memoirSaved'] = true;
@@ -24,7 +24,7 @@ class Memoir extends Model {
     public function delete($option = array()) {
         $result = $this->db->delete($this->table, $option);
         $response = array('success' => false);
-        if($result['isDeleted']) {
+        if($result['success']) {
             $response['success'] = true;
         }
         return $response;

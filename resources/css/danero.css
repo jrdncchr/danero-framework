@@ -4,6 +4,7 @@
 
 html, body {
     height: 100%;
+    overflow-x: hidden;
 }
 a {
     text-decoration: none !important;
@@ -30,12 +31,6 @@ div.un-logged a:hover {
 }
 .danero-container {
     padding: 20px 15%;
-}
-.has-error {
-    border-color: #EA7B77;
-}
-.has-error-label {
-    color: indianred;
 }
 
 /* Memoir styles
@@ -112,4 +107,9 @@ div.un-logged a:hover {
     height: 37px;
     font-size: 14px;
     position: relative;
+}
+
+.has-error .select2-selection {
+    border: 1px solid #a94442;
+    border-radius: 4px;
 }

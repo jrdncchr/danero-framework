@@ -28,6 +28,18 @@ if (!function_exists('base_url')) {
     }
 }
 
+if(!function_exists('random_str')) {
+    function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    {
+        $str = '';
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $str .= $keyspace[rand(0, $max)];
+        }
+        return $str;
+    }
+}
+
 if(!function_exists('is_multi')) {
     function is_multi($a) {
         $rv = array_filter($a, 'is_array');

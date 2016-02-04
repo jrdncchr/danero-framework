@@ -41,7 +41,7 @@ class Database {
     public function get($table, $filter = array()) {
         $this->table = $table;
         $this->_setupFilter($filter);
-        $result['isFetched'] = false;
+        $result['success'] = false;
 
         try {
             $this->init();
@@ -51,7 +51,7 @@ class Database {
                 if($stmt->execute($this->values)) {
                     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     $result['result'] = sizeof($rows) > 1 ? $rows : (sizeof($rows) == 1 ? $rows[0] : array());
-                    $result['isFetched'] = true;
+                    $result['success'] = true;
                 }
             }
         } catch (PDOException $e) {
@@ -68,7 +68,7 @@ class Database {
         $this->table = $table;
         $this->col_val = $val;
         $this->values = array();
-        $result['isAdded'] = false;
+        $result['success'] = false;
 
         if(sizeof($val) > 0) {
             try {
@@ -77,7 +77,7 @@ class Database {
                     $result['query'] = $this->query;
                     $stmt = $this->db->prepare($this->query);
                     if($stmt->execute($this->values)) {
-                        $result['isAdded'] = true;
+                        $result['success'] = true;
                         $result['lastInsertId'] = $this->db->lastInsertId();
                     }
                 }
@@ -93,7 +93,7 @@ class Database {
     public function delete($table, $option = array()) {
         $this->table = $table;
         $this->_setupFilter($option);
-        $result['isDeleted'] = false;
+        $result['success'] = false;
         if(sizeof($this->filter) > 0) {
             try {
                 $this->init();
@@ -101,7 +101,7 @@ class Database {
                     $result['query'] = $this->query;
                     $stmt = $this->db->prepare($this->query);
                     if($stmt->execute($this->values)) {
-                        $result['isDeleted'] = true;
+                        $result['success'] = true;
                     }
                 }
             } catch (PDOException $e) {
@@ -217,6 +217,14 @@ class Database {
         $columns = substr($columns, 0,-1) . ")";
         $values = substr($values, 0, -1) . ")";
         return $columns . " " . $values;
+    }
+
+    /* HELPER FUNCTIONS
+     */
+
+    public function checkExists($table, $col, $val) {
+        $result = $this->get($table, array($col => $val));
+        return $result['result'] ? true : false;
     }
 
 

@@ -17,55 +17,87 @@ function setColumnSize() {
     $('.wrapper').css('min-height', $( window ).height() - 22);
 }
 
+var inputErrors = {
+    required : [], email : []
+};
 function validateForm(form) {
-    var errors = {
+    inputErrors = {
         required : [], email : []
     };
     form.find('input, select, textarea').filter(':visible').each(function() {
         var e = $(this);
         if(!e.val()) {
             if($(this).hasClass('required')) {
-                errors.required.push(e);
+                inputErrors.required.push(e);
             }
         } else {
             if($(this).hasClass('email')) {
                 if(!validateEmail($(this).val())) {
-                    errors.email.push(e);
+                    inputErrors.email.push(e);
                 }
             }
         }
         displayInputError(e, false);
     });
 
+    var result = checkForAlertError(form);
+    return result.success;
+}
+
+function checkForAlertError(form) {
     var result = {
         success : true
     };
     var i = 0;
-    if(errors.required.length > 0) {
+    if(inputErrors.required.length > 0) {
         result.success = false;
         result.message = "A required field cannot be empty.";
-        for(i = 0; i < errors.required.length; i++) {
-            displayInputError(errors.required[i], true);
+        for(i = 0; i < inputErrors.required.length; i++) {
+            displayInputError(inputErrors.required[i], true);
         }
-    } else if(errors.email.length > 0) {
+    } else if(inputErrors.email.length > 0) {
         result.success = false;
         result.message = "Invalid email format.";
-        for(i = 0; i < errors.email.length; i++) {
-            displayInputError(errors.email[i], true);
+        for(i = 0; i < inputErrors.email.length; i++) {
+            displayInputError(inputErrors.email[i], true);
         }
     }
 
-    if(!result.success) {
-        displayAlertError(form, true, result.message);
-    }
-    return result.success;
+    displayAlertError(form, !result.success, result.message)
+    return result;
+}
+
+function enableFormValidationOnBlur(form) {
+    form.find('input, select, textarea').filter(':visible').each(function() {
+        var e = $(this);
+        e.blur(function() {
+            displayInputError(e, false);
+            if(!e.val()) {
+                if($(this).hasClass('required')) {
+                    inputErrors.required.push(e);
+                    displayInputError(e, true);
+                }
+            } else {
+                removInputError(e, 'required');
+                if($(this).hasClass('email')) {
+                    if(!validateEmail($(this).val())) {
+                        displayInputError(e, true);
+                        inputErrors.email.push(e);
+                    } else {
+                        removInputError(e, 'email')
+                    }
+                }
+            }
+            checkForAlertError(form);
+        });
+    });
 }
 
 function displayInputError(input, show) {
     if(show) {
-        input.addClass('has-error').parent('.form-group').find('label').addClass('has-error-label');
+        input.parents('.form-group').addClass('has-error');
     } else {
-        input.removeClass('has-error').parent('.form-group').find('label').removeClass('has-error-label');
+        input.parents('.form-group').removeClass('has-error');
     }
 }
 
@@ -75,6 +107,21 @@ function displayAlertError(form, show, message) {
     } else {
         form.find('.alert-danger').removeClass('alert').html("");
     }
+}
+
+function removInputError(e, type) {
+    $.each(inputErrors[type], function(i) {
+        if(inputErrors[type][i] === e || inputErrors[type][i].attr('id') == e.attr('id')) {
+            inputErrors[type].splice(i, 1);
+            return false;
+        }
+    });
+}
+
+function clearFormInputs(form) {
+    form.find('input, select, textarea').filter(':visible').each(function() {
+        $(this).val("");
+    });
 }
 
 function validateEmail(email) {
