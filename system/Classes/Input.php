@@ -21,7 +21,7 @@ class Input {
 
     public static function filterText($text) {
         $filteredText = filter_var($text,
-            FILTER_SANITIZE_STRING,
+            FILTER_SANITIZE_ENCODED,
             !FILTER_FLAG_STRIP_LOW
         );
         return $filteredText;

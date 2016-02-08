@@ -94,6 +94,7 @@ div.un-logged a:hover {
     padding: 6px !important;
     font-size: 13px;
     margin: 0 0 10px 0!important;
+    text-align: center;
 }
 .fa-sm {
     font-size: 9px;

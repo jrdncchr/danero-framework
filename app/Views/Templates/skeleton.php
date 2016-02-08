@@ -25,10 +25,17 @@
 
     <section class="container">
         <div class="danero-container">
-            <div class="un-logged">
-                <a href="<?php echo base_url() . 'user/login'; ?>">Log in</a> or
-                <a href="<?php echo base_url() . 'user/sign_up'; ?>">Sign Up</a>
-            </div>
+            <?php if(isset($user)) { ?>
+                <div class="un-logged">
+                    Welcome back, <a href="<?php echo base_url() . 'user/profile'; ?>"><?php echo $user['name']; ?></a> |
+                    <a href="<?php echo base_url() . 'user/logout'; ?>">Logout</a>
+                </div>
+            <?php } else { ?>
+                <div class="un-logged">
+                    <a href="<?php echo base_url() . 'user/login'; ?>">Log in</a> or
+                    <a href="<?php echo base_url() . 'user/sign_up'; ?>">Sign Up</a>
+                </div>
+            <?php } ?>
             <?php echo $content; ?>
         </div>
     </section>

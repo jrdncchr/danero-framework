@@ -4,7 +4,7 @@
 <div id="memoirForm">
     <div class="alert-danger"></div>
     <div class="form-group">
-        <label for="message">Message <i class="fa fa-asterisk fa-sm"></i></label>
+        <label class="control-label" for="message">Message <i class="fa fa-asterisk fa-sm"></i></label>
         <textarea class="form-control required" id="message"
                   rows="5" style="resize: none;"
                   placeholder="What's on your mind?"><?php echo isset($memoir) ? $memoir['message'] : ''; ?></textarea>
@@ -37,10 +37,12 @@
 
 <script>
     $(function() {
+        var form = $('#memoirForm');
+        enableFormValidationOnBlur(form);
 
         $('#saveBtn').on('click', function() {
-            var validate = validateForm($('#memoirForm'));
-            if(validate.success) {
+            var valid = validateForm(form);
+            if(valid) {
                 var data = {
                     message: $('#message').val(),
                     action: 'add'
@@ -49,16 +51,9 @@
                     if(response.success == true) {
                         window.location = baseUrl + "memoir/view/" + response.id;
                     } else {
-                        displayAlertError($('#memoirForm'), true, "Sorry, something went wrong.");
+                        displayAlertError(form, true, "Sorry, something went wrong.");
                     }
                 }, 'json');
-            }
-        });
-
-        $('#message').on('input', function(e) {
-            if(e.target.value !== '') {
-                displayInputError($(this), false);
-                displayAlertError($('#memoirForm'), false);
             }
         });
 

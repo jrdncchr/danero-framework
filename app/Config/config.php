@@ -25,3 +25,8 @@ $config['route']['default_controller']      = "Default";
 $config['path']['controller']               = ROOT . "/app/Controllers/";
 $config['path']['view']                     = ROOT . "/app/Views/";
 $config['path']['models']                   = ROOT . "/app/Models/";
+
+/* Redirect
+ */
+$config['redirect']['logged']               = base_url() . "memoir";
+$config['redirect']['not_logged']           = base_url() . "user/login";

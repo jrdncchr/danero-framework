@@ -54,6 +54,7 @@ class Database {
                     $result['success'] = true;
                 }
             }
+            $this->_clearDbClassProperties();
         } catch (PDOException $e) {
             Error::display('PDO_ERROR', $e->getMessage());
         }
@@ -81,6 +82,7 @@ class Database {
                         $result['lastInsertId'] = $this->db->lastInsertId();
                     }
                 }
+                $this->_clearDbClassProperties();
             } catch (PDOException $e) {
                 Error::display('PDO_ERROR', $e->getMessage());
             }
@@ -104,6 +106,7 @@ class Database {
                         $result['success'] = true;
                     }
                 }
+                $this->_clearDbClassProperties();
             } catch (PDOException $e) {
                 Error::display('PDO_ERROR', $e->getMessage());
             }
@@ -217,6 +220,14 @@ class Database {
         $columns = substr($columns, 0,-1) . ")";
         $values = substr($values, 0, -1) . ")";
         return $columns . " " . $values;
+    }
+
+    private function _clearDbClassProperties() {
+        $this->select = "*";
+        $this->filter = array();
+        $this->values = array();
+        $this->col_val = array();
+        $this->option = array();
     }
 
     /* HELPER FUNCTIONS

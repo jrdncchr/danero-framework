@@ -62,7 +62,6 @@ function checkForAlertError(form) {
             displayInputError(inputErrors.email[i], true);
         }
     }
-
     displayAlertError(form, !result.success, result.message)
     return result;
 }

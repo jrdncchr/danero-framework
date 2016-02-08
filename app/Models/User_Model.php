@@ -9,6 +9,22 @@ class User_Model extends Model {
         parent::__construct();
     }
 
+    public function login($auth) {
+        $result = array('success' => false,  'message' => 'Incorrect Email or Password.');
+        if(isset($auth['email']) && isset($auth['password'])) {
+            $user = $this->db->get($this->user_table, array('email' => $auth['email']));
+            if($user['result']) {
+                $user_secret = $this->db->get($this->user_secret_table, array('user_id' => $user['result']['id']));
+                $password = $user_secret['result']['password'];
+                if (hash_equals($password, crypt($auth['password'], $password))) {
+                    $result = array('success' => true);
+                    $_SESSION['user'] = $user['result'];
+                }
+            }
+        }
+        return $result;
+    }
+
     public function addUser($user_info) {
         $result = array('success' => false, 'message' => "Something went wrong.");
         if(sizeof($user_info) > 0) {
@@ -43,7 +59,7 @@ class User_Model extends Model {
                 $user_result = $this->db->add($this->user_table, $user_info);
                 if($user_result['success']) {
                     $result['user_id'] = $user_result['lastInsertId'];
-                    $result['secret_id'] = $this->saveUserSecret(
+                    $result['secret_id'] = $this->_saveUserSecret(
                         array(
                             'user_id'            => $result['user_id'],
                             'password'           => $password,
@@ -65,7 +81,7 @@ class User_Model extends Model {
         return $result;
     }
 
-    public function saveUserSecret($user_secret, $id = 0) {
+    private function _saveUserSecret($user_secret, $id = 0) {
         if($id == 0) {
             $result = $this->db->add($this->user_secret_table, $user_secret);
             return $result['success'] ? $result['lastInsertId'] : false;
