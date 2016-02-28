@@ -1,6 +1,3 @@
-<h2><a href="<?php echo base_url() . 'memoir'; ?>">MEMOIR</a></h2>
-<hr class="hr-header" />
-
 <?php if(isset($_SESSION['memoirSaved'])): ?>
 <div class="alert alert-success">
     <i class="fa fa-check"></i> Memoir saved successful.

@@ -1,15 +1,11 @@
-<h2 style="padding-bottom: 0 !important;">MEMOIR</h2>
-<hr class="hr-header" />
-
-<?php if(isset($_SESSION['login_error'])) { ?>
-    <div class="alert alert-danger text-center">
-        <i class="fa fa-exclamation-circle"></i> <?php echo $_SESSION['login_error']; ?>
-    </div>
-<?php unset($_SESSION['login_error']); } ?>
-
 <form class="form-horizontal danero-box" method="post" action="<?php echo base_url() . 'user/auth'; ?>">
     <h2 class="text-center">Login</h2>
     <br />
+    <?php if(isset($_SESSION['login_error'])) { ?>
+        <div class="alert alert-danger text-center">
+            <i class="fa fa-exclamation-circle"></i> <?php echo $_SESSION['login_error']; ?>
+        </div>
+    <?php unset($_SESSION['login_error']); } ?>
     <div class="form-group">
         <label for="email" class="col-sm-3 control-label">Email</label>
         <div class="col-sm-7">
