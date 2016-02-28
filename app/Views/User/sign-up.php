@@ -1,8 +1,10 @@
-<h2>SIGN UP</h2>
+<h2>MEMOIR</h2>
 <hr class="hr-header" />
 
-<div id="signupForm" class="form-horizontal" style="margin: 0 5%;">
-    <div class="alert-danger text-center"></div>
+<div class="alert-danger text-center"></div>
+<div id="signupForm" class="form-horizontal danero-box">
+    <h2 class="text-center">Sign Up</h2>
+    <br />
     <div class="form-group">
         <label for="fullName" class="col-sm-3 control-label">Name</label>
         <div class="col-sm-7">

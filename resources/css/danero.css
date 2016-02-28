@@ -5,6 +5,7 @@
 html, body {
     height: 100%;
     overflow-x: hidden;
+    background: #F2F3F8 !important;
 }
 a {
     text-decoration: none !important;
@@ -31,6 +32,17 @@ div.un-logged a:hover {
 }
 .danero-container {
     padding: 20px 15%;
+}
+
+.danero-box {
+    background: white;
+    padding: 12px;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.2),   inset 0 0 1px 0 rgba(255,255,255,1);
+    margin:  20px auto;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
 
 /* Memoir styles
