@@ -30,6 +30,12 @@ div.un-logged a:hover {
 .hr-header {
     margin: 10px 0 20px 0;
 }
+.danero-nav {
+    background: white;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.2),
+                inset 0 0 1px 0 rgba(255,255,255,1);
+}
+
 .danero-container {
     padding: 20px 15%;
 }
